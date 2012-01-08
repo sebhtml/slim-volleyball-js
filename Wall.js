@@ -16,6 +16,8 @@ Wall=function(x1,y1,x2,y2,x3,y3,x4,y4){
 	this.m_y4=y4;
 
 	this.m_isGoal=false;
+
+	this.m_explosion=0;
 }
 
 Wall.prototype.setGoal=function(){
@@ -34,6 +36,17 @@ Wall.prototype.draw=function(canvas){
 	var context=canvas.getContext("2d");
 	
 	context.fillStyle = "rgb(150,29,28)";
+	if(this.m_isGoal)
+		context.fillStyle="#4AA02C";
+
+	if(this.m_explosion>0){
+		if(this.m_explosion>25){
+			context.fillStyle = "rgb(255,255,64)";
+		}else{
+			context.fillStyle = "rgb(255,128,64)";
+		}
+	}
+
 
 	context.beginPath();
 	context.moveTo(this.m_x1,this.m_y1);
@@ -43,6 +56,9 @@ Wall.prototype.draw=function(canvas){
 	context.lineTo(this.m_x1,this.m_y1);
 	context.fill();
 	context.closePath();
+
+	if(this.m_explosion>0)
+		this.m_explosion--;
 }
 
 Wall.prototype.detectCollision=function(object){
@@ -86,4 +102,8 @@ Wall.prototype.detectCollisionWithCircle=function(x,y,radius){
 
 Wall.prototype.enforceBoundaries=function(x1,y1,x2,y2,x3,y3,x4,y4){
 
+}
+
+Wall.prototype.explose=function(){
+	this.m_explosion=30;
 }

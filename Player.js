@@ -4,7 +4,7 @@
 
 
 
-Player=function(x,y,minX,maxX,radius){
+Player=function(x,y,radius,player){
 	this.m_x=x;
 	this.m_y=y;
 	this.m_speedY=0;
@@ -23,12 +23,9 @@ Player=function(x,y,minX,maxX,radius){
 
 	this.m_speedIncrease=3;
 
-	this.m_minX=minX+this.m_radius/2;
-	this.m_maxX=maxX-this.m_radius/2;
-
 	this.m_color="rgb(28,230,150)";
 
-	if(minX!=0){
+	if(player==2){
 		this.m_color="rgb(210,30,150)";
 		this.m_speedX=this.m_maxSpeed;
 	}
@@ -94,22 +91,6 @@ Player.prototype.animate=function(){
 		this.m_speedY=0;
 	}
 
-	if(this.m_x<this.m_minX){
-		this.m_speedX=0;
-		this.m_x=this.m_minX;
-	}
-	if(this.m_x>this.m_maxX){
-		this.m_speedX=0;
-		this.m_x=this.m_maxX;
-	}
-
-/*
-	if(this.m_speedX>0)
-		this.m_speedX-=1;
-
-	if(this.m_speedX<0)
-		this.m_speedX+=1;
-*/
 }
 
 Player.prototype.draw=function(canvas){

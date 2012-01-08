@@ -132,8 +132,10 @@ Game.prototype.addPanels=function(){
 			if(x < boundary){
 				score2.increment();
 				//console.log("+1");
+				object.explose();
 			}else if(x > boundary){
 				score1.increment();
+				object.explose();
 			}
 		}
 	}
@@ -235,10 +237,15 @@ Game.prototype.addBalls=function(){
 }
 
 Game.prototype.addWalls=function(){
-	var floor=new Wall(0,this.m_height-this.m_wallThickness,this.m_width,this.m_height-this.m_wallThickness,this.m_width,this.m_height,0,this.m_height);
-	this.m_objectsToDraw.push(floor);
-	this.m_objectsToCollide.push(floor);
-	floor.setGoal();
+	var floor1=new Wall(0,this.m_height-this.m_wallThickness,this.m_width/2,this.m_height-this.m_wallThickness,this.m_width/2,this.m_height,0,this.m_height);
+	this.m_objectsToDraw.push(floor1);
+	this.m_objectsToCollide.push(floor1);
+	floor1.setGoal();
+
+	var floor2=new Wall(this.m_width/2,this.m_height-this.m_wallThickness,this.m_width,this.m_height-this.m_wallThickness,this.m_width,this.m_height,this.m_width/2,this.m_height);
+	this.m_objectsToDraw.push(floor2);
+	this.m_objectsToCollide.push(floor2);
+	floor2.setGoal();
 
 	var wall1=new Wall(0,0,this.m_wallThickness,0,this.m_wallThickness,this.m_height,0,this.m_height);
 	this.m_objectsToDraw.push(wall1);
@@ -271,13 +278,13 @@ Game.prototype.addPlayers=function(){
 
 	var radius=80;
 
-	this.m_player1=new Player(this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,0,this.m_width/2-this.m_ballRadius/2,radius);
+	this.m_player1=new Player(this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,radius,1);
 	this.m_objectsToDraw.push(this.m_player1);
 	this.m_objectsToAnimate.push(this.m_player1);
 	this.m_objectsToCollide.push(this.m_player1);
 	this.m_objectsWithGravity.push(this.m_player1);
 
-	this.m_player2=new Player(3*this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,this.m_width/2+this.m_ballRadius/2,this.m_width,radius);
+	this.m_player2=new Player(3*this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,radius,2);
 	this.m_objectsToDraw.push(this.m_player2);
 	this.m_objectsToAnimate.push(this.m_player2);
 	this.m_objectsToCollide.push(this.m_player2);

@@ -73,6 +73,8 @@ Ball.prototype.detectCollision=function(object){
 		if(collision2.collisionDetected()){
 			//console.log("Collision problem...");
 			this.animate();
+			this.animate();
+			this.animate();
 		}
 
 		//console.log("New speed "+this.m_speedX+" "+this.m_speedY);
