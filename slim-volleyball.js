@@ -5,12 +5,10 @@
 
 var game=new Game();
 
-var frequencyInHertz=60;
-var periodInMilliSeconds=1*1000/60;
+var periodInMilliSeconds=1*1000/game.getFrequency();
 
 // we can not give game.animate directly
 // to setInterval because the context won't be correct
-
 var myFunnyClosure=function(){
 	game.iterate();
 }
