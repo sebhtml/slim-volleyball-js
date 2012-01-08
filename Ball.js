@@ -17,6 +17,8 @@ Ball=function(x,y,speedX,speedY,radius){
 	this.m_collisions=0;
 
 	this.m_explosion=0;
+
+	this.m_velocity=Math.sqrt(speedX*speedX+speedY*speedY);
 }
 
 Ball.prototype.animate=function(){
@@ -62,27 +64,51 @@ Ball.prototype.detectCollision=function(object){
 	collision=object.detectCollisionWithCircle(this.m_x,this.m_y,this.m_radius);
 
 	if(collision.collisionDetected()){
+		// store energy
+		if(this.m_collisions==0){
+			this.m_velocity=Math.sqrt(this.m_speedX*this.m_speedX+this.m_speedY*this.m_speedY);
+		}
+
 		var newSpeed=collision.computeNewVector(this.m_speedX,this.m_speedY,this.m_x,this.m_y,collision.getX(),collision.getY());
 		this.m_speedX = newSpeed[0];
 		this.m_speedY = newSpeed[1];
 
+
 		this.m_collisions++;
 
-		collision2=object.detectCollisionWithCircle(this.m_x+this.m_speedX,this.m_y+this.m_speedY,this.m_radius);
-
-		if(collision2.collisionDetected()){
-			//console.log("Collision problem...");
-			this.animate();
-			this.animate();
-			this.animate();
-		}
 
 		//console.log("New speed "+this.m_speedX+" "+this.m_speedY);
 
 		this.m_explosion=30;
 
 		this.callbackForScore(this.m_x,this.m_y,object);
+
+		// buggy collision
+		collision=object.detectCollisionWithCircle(this.m_x+this.m_speedX,this.m_y+this.m_speedY,this.m_radius);
+		var i=1;
+		while(i<=3 && collision.collisionDetected()){
+			//console.log("Collision problem...");
+			this.animate();
+			collision=object.detectCollisionWithCircle(this.m_x+this.m_speedX,this.m_y+this.m_speedY,this.m_radius);
+			i++;
+		}
+
+		this.resetVelocity();
 	}
+}
+
+Ball.prototype.resetVelocity=function(){
+
+	var velocity=Math.sqrt(this.m_speedX*this.m_speedX+this.m_speedY*this.m_speedY);
+
+	if(velocity<=2*this.m_velocity)
+		return;
+
+	this.m_speedX/=velocity;
+	this.m_speedY/=velocity;
+
+	this.m_speedX*=this.m_velocity;
+	this.m_speedY*=this.m_velocity;
 }
 
 Ball.prototype.setCallbackForScore=function(callback){

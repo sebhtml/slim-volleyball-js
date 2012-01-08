@@ -6,13 +6,13 @@
 
 Game=function(){
 
-	this.m_frequency=120;
+	this.m_frequency=150;
 	this.m_displayPeriod=1;
 	
 	/* avoid storing large numbers in string format in some browsers */
 	this.m_iteration=0;
 	this.m_maxIteration=10000*this.m_displayRatio;
-	this.m_gravity=0.2;
+	this.m_gravity=0.3;
 	this.m_width=1600;
 	this.m_height=900;
 	this.m_wallThickness=20;
@@ -87,7 +87,7 @@ Game.prototype.addCanvas=function(){
 	// add a disclaimer
 	var div=document.createElement("div");
 	center.appendChild(div);
-	div.innerHTML="See <a href=\"http://github.com/sebhtml/slim-volleyball-js\">github.com/sebhtml/slim-volleyball-js</a>";
+	div.innerHTML="w: jump, a: go left, d: go right<br />see <a href=\"http://github.com/sebhtml/slim-volleyball-js\">github.com/sebhtml/slim-volleyball-js</a>";
 }
 
 Game.prototype.createContainers=function(){
@@ -278,13 +278,13 @@ Game.prototype.addPlayers=function(){
 
 	var radius=80;
 
-	this.m_player1=new Player(this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,radius,1);
+	this.m_player1=new Player(this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,radius,1,this.m_wallThickness,this.m_width/2-this.m_wallThickness/2);
 	this.m_objectsToDraw.push(this.m_player1);
 	this.m_objectsToAnimate.push(this.m_player1);
 	this.m_objectsToCollide.push(this.m_player1);
 	this.m_objectsWithGravity.push(this.m_player1);
 
-	this.m_player2=new Player(3*this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,radius,2);
+	this.m_player2=new Player(3*this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,radius,2,this.m_width/2+this.m_wallThickness/2,this.m_width-this.m_wallThickness);
 	this.m_objectsToDraw.push(this.m_player2);
 	this.m_objectsToAnimate.push(this.m_player2);
 	this.m_objectsToCollide.push(this.m_player2);

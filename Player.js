@@ -4,11 +4,14 @@
 
 
 
-Player=function(x,y,radius,player){
+Player=function(x,y,radius,player,minX,maxX){
 	this.m_x=x;
 	this.m_y=y;
 	this.m_speedY=0;
 	this.m_speedX=0;
+
+	this.m_minX=minX;
+	this.m_maxX=maxX;
 
 	this.m_leftPressed=false;
 	this.m_rightPressed=false;
@@ -18,7 +21,7 @@ Player=function(x,y,radius,player){
 	this.m_x0=x;
 	this.m_y0=y;
 
-	this.m_maxSpeed=9;
+	this.m_maxSpeed=4;
 	this.m_jumpSpeed=8;
 
 	this.m_speedIncrease=3;
@@ -91,6 +94,15 @@ Player.prototype.animate=function(){
 		this.m_speedY=0;
 	}
 
+	// fix buggy collisions
+	if((this.m_x-this.m_radius/2)<this.m_minX){
+		this.m_x=this.m_minX+this.m_radius/2;
+	}
+
+	// fix buggy collisions
+	if((this.m_x+this.m_radius/2) >this.m_maxX){
+		this.m_x=this.m_maxX-this.m_radius/2;
+	}
 }
 
 Player.prototype.draw=function(canvas){
@@ -158,7 +170,7 @@ Player.prototype.play=function(ball){
 		this.m_bestMove=-1;
 	}else if(!this.foundBallDestination()){
 		//console.log("Finding ball destination");
-		var i=10*120;
+		var i=10*200;
 
 		while(i>0 && !this.foundBallDestination()){
 			this.findBallDestination();
@@ -169,7 +181,7 @@ Player.prototype.play=function(ball){
 
 	}else if(this.foundBallDestination() && !this.calculatedMoves()){
 		this.calculateMoves();
-	}else{
+	}else if(this.calculatedMoves()){
 		this.playMove();
 	}
 
@@ -189,11 +201,18 @@ Player.prototype.findBallDestination=function(){
 }
 
 Player.prototype.calculateMoves=function(){
+	// do nothing because the ball is not coming on my side
+	if(false && !(this.m_minX <= this.m_ballX && this.m_ballX <= this.m_maxX)){
+		this.m_finalBestMove=0;
+		this.m_numberOfComputedMoves=6;
+		return;
+	}
+
 	var stepping=this.m_radius;
 	var tool=new Collision();
 
-	var xModifier=-this.m_radius/4;
-	var yModifier=-this.m_radius/2;
+	var xModifier=0;//-this.m_radius/4;
+	var yModifier=0;//-this.m_radius/2;
 
 	if(this.m_numberOfComputedMoves==0){
 		var d0=tool.getSquareDistance(this.m_x+xModifier,this.m_y+yModifier,this.m_ballX,this.m_ballY);
@@ -273,6 +292,6 @@ Player.prototype.playMove=function(){
 	}
 
 	this.m_numberOfComputedMoves=0;
-
+	
 	this.m_waitingSlices=0;
 }
