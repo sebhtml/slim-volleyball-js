@@ -4,10 +4,9 @@
 
 
 
-Sky=function(){
-}
-
-Sky.prototype.animate=function(){
+Sky=function(x,y){
+	this.m_x=x;
+	this.m_y=y;
 }
 
 Sky.prototype.draw=function(canvas){
@@ -19,4 +18,8 @@ Sky.prototype.draw=function(canvas){
 	var canvasWidth=canvas.width;
 	context.fillRect(0,0,canvasWidth,canvasHeight)
 
+
+	context.fillStyle    = '#000000';
+	context.font         = 'bold 50px sans-serif';
+	context.fillText("Slim Volleyball in javascript", this.m_x, this.m_y);
 }

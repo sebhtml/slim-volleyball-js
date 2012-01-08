@@ -11,6 +11,24 @@ Collision.prototype.animate=function(){
 }
 
 
+Collision.prototype.detectCollisionBetweenPointAndCircle=function(x1,y1,x2,y2,radius2){
+
+	var threshold=radius2*radius2;
+
+	var observed=this.getSquareDistance(x1,y1,x2,y2);
+
+	// no collision
+	if(observed>threshold){
+		this.m_collisionDetected=false;
+		return;
+	}
+
+	this.m_x=x1;
+	this.m_y=y1;
+	this.m_collisionDetected=true;
+}
+
+
 Collision.prototype.detectCollisionBetweenCircles=function(x1,y1,radius1,x2,y2,radius2){
 	var d1=(radius1+radius2);
 	var threshold=d1*d1;
@@ -180,11 +198,11 @@ Collision.prototype.computeNewVector=function(v_x,v_y,x1,y1,x2,y2){
 	n_x/=nLength;
 	n_y/=nLength;
 	
-	console.log(v_x+" "+v_y+" "+n_x+" "+n_y);
+	//console.log(v_x+" "+v_y+" "+n_x+" "+n_y);
 
 	var vn=v_x*n_x+v_y*n_y;
 
-	console.log("vn= "+vn);
+	//console.log("vn= "+vn);
 
 	var result=new Array();
 	result.push(v_x-2*vn*n_x);

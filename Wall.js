@@ -15,6 +15,15 @@ Wall=function(x1,y1,x2,y2,x3,y3,x4,y4){
 	this.m_x4=x4;
 	this.m_y4=y4;
 
+	this.m_isGoal=false;
+}
+
+Wall.prototype.setGoal=function(){
+	this.m_isGoal=true;
+}
+
+Wall.prototype.isGoal=function(){
+	return this.m_isGoal;
 }
 
 Wall.prototype.animate=function(){
@@ -56,6 +65,25 @@ Wall.prototype.detectCollisionWithCircle=function(x,y,radius){
 		return collision;
 
 	collision.detectCollisionBetweenLineAndCircle(this.m_x4,this.m_y4,this.m_x1,this.m_y1,x,y,radius);
-		
+	if(collision.collisionDetected())
+		return collision;
+
+	collision.detectCollisionBetweenPointAndCircle(this.m_x1,this.m_y1,x,y,radius);
+	if(collision.collisionDetected())
+		return collision;
+	collision.detectCollisionBetweenPointAndCircle(this.m_x2,this.m_y2,x,y,radius);
+	if(collision.collisionDetected())
+		return collision;
+	collision.detectCollisionBetweenPointAndCircle(this.m_x3,this.m_y3,x,y,radius);
+	if(collision.collisionDetected())
+		return collision;
+	collision.detectCollisionBetweenPointAndCircle(this.m_x4,this.m_y4,x,y,radius);
+	if(collision.collisionDetected())
+		return collision;
+
 	return collision;
+}
+
+Wall.prototype.enforceBoundaries=function(x1,y1,x2,y2,x3,y3,x4,y4){
+
 }

@@ -13,5 +13,12 @@ var myFunnyClosure=function(){
 	game.iterate();
 }
 
+// run the game in intervals
 setInterval(myFunnyClosure,periodInMilliSeconds);
+
+// bind keyboard
+document.onkeypress=function(e){
+	game.getPlayer().processKeyboardEvent(e);
+}
+
 
