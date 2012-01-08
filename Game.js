@@ -124,6 +124,7 @@ Game.prototype.addPanels=function(){
 	this.m_objectsToDraw.push(this.m_score2);
 
 	var boundary=this.m_width/2;
+	var variable=this;
 
 	// another closure here !
 	var callback=function(x,y,object){
@@ -136,6 +137,9 @@ Game.prototype.addPanels=function(){
 			}else if(x > boundary){
 				score1.increment();
 				object.explose();
+				if(score1.getScore()==16){
+					variable.addSmallBalls();
+				}
 			}
 		}
 	}
@@ -199,41 +203,27 @@ Game.prototype.updateDisplay=function(){
 
 }
 
+Game.prototype.addSmallBalls=function(){
+	var x=100;
+	while(x<this.m_width){
+		var ball5=new Ball(x,200,0,3,10);
+		this.m_objectsToDraw.push(ball5);
+		this.m_objectsToAnimate.push(ball5);
+		this.m_objectsToCollide.push(ball5);
+		this.m_objectsWithGravity.push(ball5);
+		x+=100;
+	}
+}
+
 Game.prototype.addBalls=function(){
-/*
-	var ball1=new Ball(200,200,2,-2);
-	this.m_objectsToDraw.push(ball1);
-	this.m_objectsToAnimate.push(ball1);
-	this.m_objectsToCollide.push(ball1);
-	this.m_objectsWithGravity.push(ball1);
-
-	var ball2=new Ball(300,100,1,-1);
-	this.m_objectsToDraw.push(ball2);
-	this.m_objectsToAnimate.push(ball2);
-	this.m_objectsToCollide.push(ball2);
-	this.m_objectsWithGravity.push(ball2);
-
-	var ball3=new Ball(400,200,2,-2);
-	this.m_objectsToDraw.push(ball3);
-	this.m_objectsToAnimate.push(ball3);
-	this.m_objectsToCollide.push(ball3);
-	this.m_objectsWithGravity.push(ball3);
-*/
-	this.m_ballRadius=38;
-
-	var ball4=new Ball(this.m_width/4,400,0,-10,this.m_ballRadius);
+	var ball4=new Ball(this.m_width/4,400,0,-10,38);
 	this.m_objectsToDraw.push(ball4);
 	this.m_objectsToAnimate.push(ball4);
 	this.m_objectsToCollide.push(ball4);
 	this.m_objectsWithGravity.push(ball4);
 
+	// for tracking
 	this.m_ball=ball4;
-
-/*
-	var ball5=new Ball(this.m_width/2,this.m_height-this.m_wallThickness,0,0,this.m_ballRadius);
-	this.m_objectsToDraw.push(ball5);
-	this.m_objectsToCollide.push(ball5);
-*/
 }
 
 Game.prototype.addWalls=function(){
@@ -278,13 +268,13 @@ Game.prototype.addPlayers=function(){
 
 	var radius=80;
 
-	this.m_player1=new Player(this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,radius,1,this.m_wallThickness,this.m_width/2-this.m_wallThickness/2);
+	this.m_player1=new Player(this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,radius,1,this.m_wallThickness,this.m_width/2-this.m_wallThickness);
 	this.m_objectsToDraw.push(this.m_player1);
 	this.m_objectsToAnimate.push(this.m_player1);
 	this.m_objectsToCollide.push(this.m_player1);
 	this.m_objectsWithGravity.push(this.m_player1);
 
-	this.m_player2=new Player(3*this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,radius,2,this.m_width/2+this.m_wallThickness/2,this.m_width-this.m_wallThickness);
+	this.m_player2=new Player(3*this.m_width/4,this.m_height-1*this.m_wallThickness-radius-1,radius,2,this.m_width/2+this.m_wallThickness,this.m_width-this.m_wallThickness);
 	this.m_objectsToDraw.push(this.m_player2);
 	this.m_objectsToAnimate.push(this.m_player2);
 	this.m_objectsToCollide.push(this.m_player2);

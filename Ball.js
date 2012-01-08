@@ -19,6 +19,8 @@ Ball=function(x,y,speedX,speedY,radius){
 	this.m_explosion=0;
 
 	this.m_velocity=Math.sqrt(speedX*speedX+speedY*speedY);
+
+	this.m_hasCallback=false;
 }
 
 Ball.prototype.animate=function(){
@@ -81,7 +83,8 @@ Ball.prototype.detectCollision=function(object){
 
 		this.m_explosion=30;
 
-		this.callbackForScore(this.m_x,this.m_y,object);
+		if(this.m_hasCallback)
+			this.callbackForScore(this.m_x,this.m_y,object);
 
 		// buggy collision
 		collision=object.detectCollisionWithCircle(this.m_x+this.m_speedX,this.m_y+this.m_speedY,this.m_radius);
@@ -113,6 +116,8 @@ Ball.prototype.resetVelocity=function(){
 
 Ball.prototype.setCallbackForScore=function(callback){
 	this.callbackForScore=callback;
+
+	this.m_hasCallback=true;
 }
 
 Ball.prototype.detectCollisionWithCircle=function(x,y,radius){

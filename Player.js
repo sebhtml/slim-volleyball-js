@@ -21,8 +21,14 @@ Player=function(x,y,radius,player,minX,maxX){
 	this.m_x0=x;
 	this.m_y0=y;
 
-	this.m_maxSpeed=4;
-	this.m_jumpSpeed=8;
+	this.m_eyeX=this.m_radius/4;
+	this.m_eyeY=this.m_radius/3;
+	this.m_angry=0;
+
+	this.m_maxSpeed=9;
+	this.m_jumpSpeed=10;
+
+	this.m_speedIncrease=this.m_maxSpeed;
 
 	this.m_speedIncrease=3;
 
@@ -94,14 +100,23 @@ Player.prototype.animate=function(){
 		this.m_speedY=0;
 	}
 
+	var width=16;
 	// fix buggy collisions
-	if((this.m_x-this.m_radius/2)<this.m_minX){
-		this.m_x=this.m_minX+this.m_radius/2;
+	if((this.m_x-this.m_radius)<(this.m_minX-width)){
+		this.m_x=this.m_minX+this.m_radius+1;
+		this.m_speedX=0;
+		this.m_speedY=0;
+
+		//console.log("Fixing on the left");
 	}
 
 	// fix buggy collisions
-	if((this.m_x+this.m_radius/2) >this.m_maxX){
-		this.m_x=this.m_maxX-this.m_radius/2;
+	if((this.m_x+this.m_radius) >(this.m_maxX+width)){
+		this.m_x=this.m_maxX-this.m_radius-1;
+		this.m_speedX=0;
+		this.m_speedY=0;
+
+		//console.log("Fixing on the right");
 	}
 }
 
@@ -116,6 +131,12 @@ Player.prototype.draw=function(canvas){
 	context.closePath();
 	context.fill();
 
+	if(this.m_angry>0){
+		this.drawAngryFace(context);
+		this.m_angry--;
+	}else{
+		this.drawFace(context);
+	}
 }
 
 Player.prototype.detectCollision=function(object){
@@ -127,6 +148,8 @@ Player.prototype.detectCollision=function(object){
 		this.m_speedX = newSpeed[0];
 		this.m_speedY= newSpeed[1];
 		//console.log("New speed "+this.m_speedX+" "+this.m_speedY);
+
+		this.m_angry=16;
 	}
 }
 
@@ -294,4 +317,53 @@ Player.prototype.playMove=function(){
 	this.m_numberOfComputedMoves=0;
 	
 	this.m_waitingSlices=0;
+}
+
+Player.prototype.drawAngryFace=function(context){
+	context.fillStyle="#ff0000";
+	context.strokeStyle="#000000"; 
+
+	context.beginPath();
+	context.arc(this.m_x-this.m_eyeX,this.m_y-this.m_eyeY, 10, 0, Math.PI*2, true);
+	context.fill();
+	context.stroke();
+	context.closePath();
+
+	context.beginPath();
+	context.arc(this.m_x+this.m_eyeX,this.m_y-this.m_eyeY, 10, 0, Math.PI*2, true);
+	context.fill();
+	context.stroke();
+	context.closePath();
+
+	context.beginPath();
+	context.arc(this.m_x,this.m_y,35,0,Math.PI,false);
+	context.moveTo(this.m_x-35,this.m_y);
+	context.lineTo(this.m_x+35,this.m_y);
+	context.fill();
+	context.stroke();
+	context.closePath();
+
+}
+
+Player.prototype.drawFace=function(context){
+	context.fillStyle="#000000";
+	context.strokeStyle="#000000"; 
+
+	context.beginPath();
+	context.arc(this.m_x-this.m_eyeX,this.m_y-this.m_eyeY, 10, 0, Math.PI*2, true);
+	context.closePath();
+	context.fill();
+
+	context.beginPath();
+	context.arc(this.m_x+this.m_eyeX,this.m_y-this.m_eyeY, 10, 0, Math.PI*2, true);
+	context.fill();
+	context.closePath();
+
+	context.beginPath();
+	context.arc(this.m_x,this.m_y,35,0,Math.PI,false);
+	context.fill();
+	context.closePath();
+
+
+
 }

@@ -12,9 +12,13 @@ ScorePanel.prototype.draw=function(canvas){
 	var context=canvas.getContext("2d");
 	context.fillStyle    = '#000000';
 	context.font         = 'bold 50px sans-serif';
-	context.fillText(this.m_score, this.m_x, this.m_y);
+	context.fillText(this.m_score, this.m_x-30, this.m_y);
 }
 
 ScorePanel.prototype.increment=function(){
 	this.m_score++;
+}
+
+ScorePanel.prototype.getScore=function(){
+	return this.m_score;
 }
