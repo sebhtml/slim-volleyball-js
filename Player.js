@@ -100,7 +100,7 @@ Player.prototype.animate=function(){
 		this.m_speedY=0;
 	}
 
-	var width=16;
+	var width=4;
 	// fix buggy collisions
 	if((this.m_x-this.m_radius)<(this.m_minX-width)){
 		this.m_x=this.m_minX+this.m_radius+1;
