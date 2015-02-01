@@ -13,8 +13,12 @@ Game=function(){
 	this.m_iteration=0;
 	this.m_maxIteration=10000*this.m_displayRatio;
 	this.m_gravity=0.3;
-	this.m_width=1600;
-	this.m_height=900;
+
+	var windowWidth = window.innerWidth;
+	var windowHeight = window.innerHeight;
+
+	this.m_width= windowWidth - 30;
+	this.m_height= windowHeight - 70;
 	this.m_wallThickness=20;
 
 	this.addTitle();
